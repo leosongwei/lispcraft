@@ -59,6 +59,7 @@ unsigned int build_shader(const char* vs_code, const char* fs_code)
 		printf("Vertex shader compile error:\n");
 		printf("%s\n", info_log_buffer);
 		free(info_log_buffer);
+        return 0;
 	}else{
 		printf("Vertex shader compilation succeeded.\n");
 	}
@@ -77,6 +78,7 @@ unsigned int build_shader(const char* vs_code, const char* fs_code)
 		printf("Fragment shader compile error:\n");
 		printf("%s\n", info_log_buffer);
 		free(info_log_buffer);
+        return 0;
 	}else{
 		printf("Fragment shader compilation succeeded.\n");
 	}
@@ -96,6 +98,7 @@ unsigned int build_shader(const char* vs_code, const char* fs_code)
 		printf("Shader program linking error:\n");
 		printf("%s\n", info_log_buffer);
 		free(info_log_buffer);
+        return 0;
 	}else{
 		printf("Shader program linking succeeded.\n");
 	}
