@@ -1,5 +1,5 @@
-add_library(lispcaftc SHARED ./cpart.c)
+add_library(lispcaft SHARED lispcraft.h gl.c windowlib.c)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-O3")        ## Optimize
+    set(CMAKE_CXX_FLAGS "-O2")        ## Optimize
 endif()
