@@ -6,8 +6,7 @@
          (col-row (if (= (array-dimension a 1) (array-dimension b 0))
                       (array-dimension a 1)
                       (progn
-                        (signal 'arithmetic-error
-                                :operation 'multiply-mat :operands `(,a ,b))
+                        (error "multiply-mat: arrays not match")
                         -233)))
          (m (make-array `(,row ,col) :element-type 'single-float)))
     (dotimes (r row)
@@ -88,6 +87,7 @@
   (multiply-mat m44 m44))
 |#
 
+
 #|
 M : matrix([1, 2, 3],
         [4, 5, 6],
@@ -150,3 +150,16 @@ V4 : transpose(matrix([1.0, 2.0, 3.0, 4.0]));
                                   (0.0 0.0 ,s  0.0)
                                   (0.0 0.0 0.0 1.0))))
 
+(tan (/ pi 6))
+
+(defun frustum-mat (degree-y aspect znear zfar)
+  (let* ((fov-y (* (/ degree-y 180) M_PI))
+         (f (/ 1 (tan (/ fov-y 2))))
+         (a (/ (+ zfar znear) (- znear zfar)))
+         (b (/ (* 2 zfar znear) (- znear zfar))))
+    (make-array '(4 4) :element-type 'single-float
+                :initial-contents
+                `((,(/ f aspect)  0.0   0.0  0.0)
+                  (0.0            ,f    0.0  0.0)
+                  (0.0            0.0   ,a   ,b)
+                  (0.0            0.0  -1.0  1.0)))))
