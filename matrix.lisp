@@ -1,5 +1,24 @@
 ;; (aref array row col)
 
+(defun multiply-mat (a b)
+  (let* ((row (array-dimension a 0))
+         (col (array-dimension b 1))
+         (col-row (if (= (array-dimension a 1) (array-dimension b 0))
+                      (array-dimension a 1)
+                      (progn
+                        (signal 'arithmetic-error
+                                :operation 'multiply-mat :operands `(,a ,b))
+                        -233)))
+         (m (make-array `(,row ,col) :element-type 'single-float)))
+    (dotimes (r row)
+      (dotimes (c col)
+        (setf (aref m r c)
+              (let ((sum 0.0))
+                (dotimes (j col-row)
+                  (incf sum (* (aref a r j) (aref b j c))))
+                sum))))
+    m))
+
 (defun mul-33-33 (a b)
   (let ((m (make-array '(3 3) :element-type 'single-float)))
     (dotimes (r 3)
@@ -65,7 +84,8 @@
       (v4 #1a(1.0 2.0 3.0 4.0)))
   (mul-33-v3 m33 v3)
   (mul-44-44 m44 m44)
-  (mul-44-v4 m44 v4))
+  (mul-44-v4 m44 v4)
+  (multiply-mat m44 m44))
 |#
 
 #|
@@ -80,3 +100,53 @@ M4 : matrix(
     [5, 6, 7, 8]);
 V4 : transpose(matrix([1.0, 2.0, 3.0, 4.0]));
 |#
+
+(defconstant M_PI 3.14159265358979323846)
+
+(defun 3d-trans-mat (x y z)
+  (make-array '(4 4) :element-type 'single-float
+              :initial-contents `((1.0 0.0 0.0 ,x)
+                                  (0.0 1.0 0.0 ,y)
+                                  (0.0 0.0 1.0 ,z)
+                                  (0.0 0.0 0.0 1.0))))
+
+(defun 3d-rotate-x (degree)
+  (let* ((theta (* (/ degree 180) M_PI))
+         (sin (sin theta))
+         (cos (cos theta)))
+    (make-array '(4 4) :element-type 'single-float
+                :initial-contents
+                `((1.0  0.0   0.0      0.0)
+                  (0.0  ,cos  ,(- sin) 0.0)
+                  (0.0  ,sin  ,cos     0.0)
+                  (0.0  0.0   0.0      1.0)))))
+
+(defun 3d-rotate-y (degree)
+  (let* ((theta (* (/ degree 180) M_PI))
+         (sin (sin theta))
+         (cos (cos theta)))
+    (make-array '(4 4) :element-type 'single-float
+                :initial-contents
+                `((,cos      0.0  ,sin  0.0)
+                  (0.0       1.0  0.0   0.0)
+                  (,(- sin)  0.0  ,cos  0.0)
+                  (0.0       0.0  0.0   1.0)))))
+
+(defun 3d-rotate-z (degree)
+  (let* ((theta (* (/ degree 180) M_PI))
+         (sin (sin theta))
+         (cos (cos theta)))
+    (make-array '(4 4) :element-type 'single-float
+                :initial-contents
+                `((,cos  ,(- sin)  0.0  0.0)
+                  (,sin  ,cos      0.0  0.0)
+                  (0.0   0.0       1.0  0.0)
+                  (0.0   0.0       0.0  1.0)))))
+
+(defun 3d-scale (s)
+  (make-array '(4 4) :element-type 'single-float
+              :initial-contents `((,s  0.0 0.0 0.0)
+                                  (0.0 ,s  0.0 0.0)
+                                  (0.0 0.0 ,s  0.0)
+                                  (0.0 0.0 0.0 1.0))))
+
