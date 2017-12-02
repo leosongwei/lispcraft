@@ -41,10 +41,10 @@
 #|
 (defparameter *glfw-window-pointer*
   (cffi:with-foreign-string (title "hello world")
-    (init-glfw 640 480 title)))
+    (init_glfw 640 480 title)))
 
-(establish-gl-context)
-(clear-buffers)
+(establish_gl_context)
+(clear_buffers)
 (glfwSwapBuffers *glfw-window-pointer*)
 |#
 
