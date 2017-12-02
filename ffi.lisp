@@ -24,3 +24,6 @@
 (cffi:defcfun "establish_gl_context" :void)
 ;; void clear_buffers(void);
 (cffi:defcfun "clear_buffers" :void)
+;; unsigned int make_texture(const char* c_texture_path);
+(cffi:defcfun "make_texture" :unsigned-int
+  (c_texture_path :pointer))

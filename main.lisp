@@ -7,6 +7,9 @@
 ;; ------------------------------------------------------------
 ;; module
 
+(defstruct texture
+  (glid 0 :type integer))
+
 (defstruct module
   vertex
   tex-coord
