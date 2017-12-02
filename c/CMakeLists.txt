@@ -1,5 +1,4 @@
-add_library(lispcaft SHARED lispcraft.h gl.c windowlib.c)
+add_library(lispcraft SHARED lispcraft.h gl.c windowlib.c)
+target_link_libraries(lispcraft GL GLU GLEW glfw)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-O2")        ## Optimize
-endif()
+set(CMAKE_C_FLAGS "-O2")        ## Optimize
