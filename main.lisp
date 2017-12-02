@@ -3,6 +3,7 @@
 (load "~/.emacs.d/slime/start-swank.lisp")
 
 (load "ffi.lisp")
+(load "matrix.lisp")
 
 ;; ------------------------------------------------------------
 ;; module
